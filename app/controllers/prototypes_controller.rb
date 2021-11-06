@@ -1,4 +1,5 @@
 class PrototypesController < ApplicationController
+  before_action :set_tweet, only: [:show, :edit, :update]
   before_action :move_to_index, except: [:index, :show, :search]
   def index
     @prototypes = Prototype.includes(:user)
@@ -18,12 +19,30 @@ class PrototypesController < ApplicationController
   end
 
   def show
-    @prototype = Prototype.find(params[:id])
+  end
+
+  def edit
+  end
+
+  def update
+    if @prototype.update(prototype_params)
+      redirect_to root_path
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    
   end
 
   private
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
+  end
+
+  def set_tweet
+    @prototype = Prototype.find(params[:id])
   end
 
   def move_to_index

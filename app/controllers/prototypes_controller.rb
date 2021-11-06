@@ -1,5 +1,5 @@
 class PrototypesController < ApplicationController
-  before_action :set_tweet, only: [:show, :edit, :update]
+  before_action :set_tweet, only: [:show, :edit, :update, :destroy]
   before_action :move_to_index, except: [:index, :show, :search]
   def index
     @prototypes = Prototype.includes(:user)
@@ -33,7 +33,11 @@ class PrototypesController < ApplicationController
   end
 
   def destroy
-    
+    if @prototype.destroy
+      redirect_to root_path
+    else
+      render :edit
+    end
   end
 
   private
